@@ -1,0 +1,26 @@
+* {
+    background-color: bisque;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#start {
+    background-color: plum;
+    font-size: 20px;
+}
+
+#timer {
+    color: darkslategrey;
+    font-size: 20px;
+}
+
+#quiz-container {
+    color: rgb(186, 109, 186);
+}
+
+#question {
+    font-size: 20px;
+}
+
+#answers {
+    font-size: 16px;
+}
