@@ -3,6 +3,7 @@ var questions = document.getElementById("question");
 var answers = document.getElementById("answers");
 var timer = document.getElementById("timer");
 var startButton = document.getElementById("start");
+var message = document.getElementById("message");
 console.log(document.getElementById("start"));
 
 var actualQuiz= [
@@ -21,7 +22,7 @@ var actualQuiz= [
             { answer: "Blonde roux", isItCorrect: false },
             { answer: "Emulsification", isItCorrect: true},
             { answer: "White roux", isItCorrect: false},
-            { answer: "Puréeing", isItCorrect: false},
+            { answer: "Pureeing", isItCorrect: false},
         ]
     },
     {
@@ -43,7 +44,7 @@ var actualQuiz= [
         ] 
     },
     {
-        question: "CMeat is firmest when it is cooked:",
+        question: "Meat is firmest when it is cooked:",
         answers: [
             { answer: "Medium", isItCorrect: false },
             { answer: "Medium Well", isItCorrect: false},
@@ -109,12 +110,20 @@ function checkAns(event) {
     
     if (isCorrect) {
         score++;
-        console.log("Correct!");
+        message.textContent = "Correct!";
     } else {
         timeLeft-= 10;
-        console.log("Incorrect!");
+        message.textContent = "Incorrect!"
     }
-    nextQuestion();
+
+    setTimeout(function(){
+        message.textContent = "";
+    },1500);
+
+    setTimeout(function(){
+        nextQuestion();
+    },1500);
+    
 }
 
 function startQuiz() {
@@ -132,11 +141,10 @@ function saveScore() {
   var userScore = { score: score }; 
   localStorage.setItem("userScore", JSON.stringify(userScore));
 
-  viewHighScores.addEventListener("click", saveScore);
   var savedScore = localStorage.getItem("userScore");
 
   var scoreDisplay = document.createElement("p");
   scoreDisplay.style.color = "rgb(186, 109, 186)";
   scoreDisplay.textContent = "Your score: " + savedScore;
-  document.getElementsByClassName("container").appendChild(scoreDisplay);
+  document.getElementById("scorelist").appendChild(scoreDisplay);
 };
