@@ -16,6 +16,7 @@ The goal of this project was to create a timed quiz that starts at the click of 
 
 ## Getiing Started
 No installation neccesary, just open in your browser and get started!
+https://mcchristy.github.io/challenge-week-4/ 
 
 
 ## Contributing
