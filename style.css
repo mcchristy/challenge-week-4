@@ -10,11 +10,18 @@
 
 #timer {
     color: darkslategrey;
-    font-size: 20px;
+    font-size: 30px;
+    position: fixed;
+    top: 10px;
+    right: 10px;
 }
 
 #quiz-container {
     color: rgb(186, 109, 186);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);     
 }
 
 #question {
@@ -23,4 +30,12 @@
 
 #answers {
     font-size: 16px;
+}
+
+.container {
+    color: rgb(186, 109, 186);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
 }

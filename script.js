@@ -1,5 +1,5 @@
 var quizContainer = document.getElementById("quiz-container");
-var question = document.getElementById("question");
+var questions = document.getElementById("question");
 var answers = document.getElementById("answers");
 var timer = document.getElementById("timer");
 var startButton = document.getElementById("start");
@@ -52,3 +52,91 @@ var actualQuiz= [
         ] 
     },
 ]
+
+startButton.style.position = "absolute";
+startButton.style.left = "50%";
+startButton.style.transform = "translateX(-50%)";
+startButton.style.top = "50%";
+startButton.style.transform = "translateY(-50%)";
+
+var highscores = document.getElementById("scores");
+highscores.style.position = "absolute";
+highscores.style.color = "black";
+highscores.style.fontSize = "20px";
+
+var timeLeft = 75;
+function countDown() {
+    var interval = setInterval(function() {
+        timer.textContent=timeLeft;
+        timeLeft--;
+        if (timeLeft === 0) {
+            clearInterval(interval);
+            timer.textContent = displayMessage();
+        }
+    } ,1000);
+};
+
+var count = 0;
+var score = 0;
+
+function nextQuestion() {
+    while (answers.firstChild) {
+        answers.firstChild.remove();
+    };
+
+    if (count >= actualQuiz.length) {
+        quizContainer.style.display = "none";
+        console.log("Quiz completed! Score: " + score);
+
+        saveScoreToLocalStorage();
+        window.location.href= "highscores.html";
+        return;
+    }
+    questions.textContent = actualQuiz[count].question;
+    for (i=0; i<actualQuiz[count].answers.length; i++) {
+        var button = document.createElement("button");
+        button.innerText = actualQuiz[count].answers[i].answer;
+        button.setAttribute("data-isItCorrect", actualQuiz[count].answers[i].isItCorrect);
+        button.addEventListener("click", checkAns);
+        answers.appendChild(button);
+    };
+    count++
+};
+
+function checkAns(event) {
+    var selectedButton = event.target;
+    var isCorrect = selectedButton.getAttribute("data-isItCorrect") === "true";
+    
+    if (isCorrect) {
+        score++;
+        console.log("Correct!");
+    } else {
+        timeLeft-= 10;
+        console.log("Incorrect!");
+    }
+    nextQuestion();
+}
+
+function startQuiz() {
+    countDown();
+    nextQuestion();
+    quizContainer.style.display = "block";
+    startButton.style.display = "none";
+}
+
+startButton.addEventListener("click", startQuiz);
+
+var viewHighScores = document.getElementById("viewHighScores");
+
+function saveScore() {
+  var userScore = { score: score }; 
+  localStorage.setItem("userScore", JSON.stringify(userScore));
+
+  viewHighScores.addEventListener("click", saveScore);
+  var savedScore = localStorage.getItem("userScore");
+
+  var scoreDisplay = document.createElement("p");
+  scoreDisplay.style.color = "rgb(186, 109, 186)";
+  scoreDisplay.textContent = "Your score: " + savedScore;
+  document.getElementsByClassName("container").appendChild(scoreDisplay);
+};
