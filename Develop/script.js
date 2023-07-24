@@ -72,14 +72,14 @@ function countDown() {
         timeLeft--;
         if (timeLeft === 0) {
             clearInterval(interval);
-            timer.textContent = displayMessage();
+            // timer.textContent = displayMessage();
         }
     } ,1000);
 };
 
 var count = 0;
 var score = 0;
-
+var highscoreMenu = false
 function nextQuestion() {
     while (answers.firstChild) {
         answers.firstChild.remove();
@@ -89,8 +89,9 @@ function nextQuestion() {
         quizContainer.style.display = "none";
         console.log("Quiz completed! Score: " + score);
 
-        saveScoreToLocalStorage();
-        window.location.href= "highscores.html";
+        saveScoreToLocalStorage(score);
+        highscoreMenu=true
+        displayScore()
         return;
     }
     questions.textContent = actualQuiz[count].question;
@@ -135,16 +136,37 @@ function startQuiz() {
 
 startButton.addEventListener("click", startQuiz);
 
-var viewHighScores = document.getElementById("viewHighScores");
+// var viewHighScores = document.createElement("li");
+// var list = document.getElementById("scorelist");
+// list.append(viewHighScores);
 
-function saveScore() {
-  var userScore = { score: score }; 
-  localStorage.setItem("userScore", JSON.stringify(userScore));
+function saveScoreToLocalStorage(score) { 
+var userScore = localStorage.getItem('userScore');
+userScore = userScore ? JSON.parse(userScore) : [];
+userScore = userScore.concat(score);
+localStorage.setItem("userScore", JSON.stringify(userScore));
+}
 
-  var savedScore = localStorage.getItem("userScore");
+function displayScore() {
+    
+    var userScore = localStorage.getItem("userScore");
+    userScore = JSON.parse(userScore);
+    console.log(userScore)
+    if (userScore.length > 0) {
+        for(i=0;i<userScore.length;i++){
+            var viewHighScores = document.createElement("li");
+            viewHighScores.textContent = "Your score: " + userScore[i];
+            document.getElementById('scores').appendChild(viewHighScores)
+        }
+    } else {
+        var viewHighScores = document.createElement("li");
+        viewHighScores.textContent ="No score available.";
+        document.getElementById('scores').appendChild(viewHighScores)
+    }
+}
 
-  var scoreDisplay = document.createElement("p");
-  scoreDisplay.style.color = "rgb(186, 109, 186)";
-  scoreDisplay.textContent = "Your score: " + savedScore;
-  document.getElementById("scorelist").appendChild(scoreDisplay);
-};
+//if (highscoreMenu) {
+ //   displayScore();
+//} else {
+//    saveScoreToLocalStorage(score);
+//}
